@@ -1,15 +1,18 @@
 ################
 # Scripts name : get_windows_config.ps1
 # Usage        : ./get_windows_config.ps1
-# Description  : Windowsî•ñæ“¾ƒXƒNƒŠƒvƒg
+# Description  : Windowsæƒ…å ±å–å¾—ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
 # Create       : 2022/05/22 tech-mmmm (https://tech-mmmm.blogspot.com/)
 # Modify       :
 ################
 
-$today = (Get-Date).ToString("yyyyMMdd-HHmmss")    # ƒƒOo—Í“ú
-$file_path=".\$(hostname)_config_${today}.log"     # ƒƒOƒtƒ@ƒCƒ‹–¼
-$encode_file_path=".\$(hostname)_encode_${today}.tmp"     # •¶š‰»‚¯‘Îô—pˆêƒtƒ@ƒCƒ‹–¼
+$today = (Get-Date).ToString("yyyyMMdd-HHmmss")    # ãƒ­ã‚°å‡ºåŠ›æ—¥æ™‚
+$file_path = ".\$(hostname)_config_${today}.log"     # ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«å
+$encode_file_path = ".\$(hostname)_encode_${today}.tmp"     # æ–‡å­—åŒ–ã‘å¯¾ç­–ç”¨ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«å
 Start-Transcript -Path ${file_path}
+
+# åˆ—æŒ™é …ç›®ãŒçœç•¥ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
+$FormatEnumerationLimit = -1 #
 
 function show_title($title){
     Write-Output "################################"
@@ -18,9 +21,9 @@ function show_title($title){
     Write-Output ""
 }
 
-# ŠÖ”–¼: ƒRƒ}ƒ“ƒhÀsƒƒOæ“¾ŠÖ”
-# ˆø”1: ÀsƒRƒ}ƒ“ƒh(ˆø”‚ÌƒRƒ}ƒ“ƒh‚Å$‚ğ—˜—p‚·‚éê‡‚ÍƒGƒXƒP[ƒv(`$)‚·‚é‚±‚Æ)
-# ˆø”2: list: ƒŠƒXƒg‚Å‚·‚×‚Ä‚Ì€–Ú‚ğ•\¦A list_brief: ƒŠƒXƒg‚Åˆê•”€–Ú‚ğ•\¦AÈ—ª: ƒe[ƒuƒ‹•\¦
+# é–¢æ•°å: ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œãƒ­ã‚°å–å¾—é–¢æ•°
+# å¼•æ•°1: å®Ÿè¡Œã‚³ãƒãƒ³ãƒ‰(å¼•æ•°ã®ã‚³ãƒãƒ³ãƒ‰ã§$ã‚’åˆ©ç”¨ã™ã‚‹å ´åˆã¯ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—(`$)ã™ã‚‹ã“ã¨)
+# å¼•æ•°2: list: ãƒªã‚¹ãƒˆã§ã™ã¹ã¦ã®é …ç›®ã‚’è¡¨ç¤ºã€ list_brief: ãƒªã‚¹ãƒˆã§ä¸€éƒ¨é …ç›®ã‚’è¡¨ç¤ºã€çœç•¥: ãƒ†ãƒ¼ãƒ–ãƒ«è¡¨ç¤º
 function get_command($command, $output_format){
     Write-Output "(command)# ${command}"
     if(${output_format} -eq "list"){
@@ -33,62 +36,62 @@ function get_command($command, $output_format){
     try{
         Invoke-Expression "${command}"
     }catch{
-        Write-Output "[ERROR] ƒRƒ}ƒ“ƒhÀsƒGƒ‰[BCommand: ${command}"
+        Write-Output "[ERROR] ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œã‚¨ãƒ©ãƒ¼ã€‚Command: ${command}"
     }
 }
 
-# ŠÖ”–¼: İ’èƒtƒ@ƒCƒ‹æ“¾ŠÖ”(ƒRƒƒ“ƒgA‹ósíœ)
-# ˆø”1: ƒtƒ@ƒCƒ‹ƒpƒX
+# é–¢æ•°å: ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œãƒ­ã‚°å–å¾—é–¢æ•°(ã‚³ãƒãƒ³ãƒ‰ãƒ—ãƒ­ãƒ³ãƒ—ãƒˆç”¨)
+# å¼•æ•°1: å®Ÿè¡Œã‚³ãƒãƒ³ãƒ‰(å¼•æ•°ã®ã‚³ãƒãƒ³ãƒ‰ã§$ã‚’åˆ©ç”¨ã™ã‚‹å ´åˆã¯ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—(`$)ã™ã‚‹ã“ã¨)
+# å¼•æ•°2: list: ãƒªã‚¹ãƒˆã§ã™ã¹ã¦ã®é …ç›®ã‚’è¡¨ç¤ºã€ list_brief: ãƒªã‚¹ãƒˆã§ä¸€éƒ¨é …ç›®ã‚’è¡¨ç¤ºã€çœç•¥: ãƒ†ãƒ¼ãƒ–ãƒ«è¡¨ç¤º
+function get_command_bat($command){
+    Write-Output "(command_bat)# cmd /C '${command}'"
+    try{
+        Invoke-Expression "cmd /C '${command}' | fl"
+    }catch{
+        Write-Output "[ERROR] ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œã‚¨ãƒ©ãƒ¼ã€‚Command: ${command}"
+    }
+    Write-Output ""
+}
+
+# é–¢æ•°å: è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«å–å¾—é–¢æ•°(ã‚³ãƒ¡ãƒ³ãƒˆã€ç©ºè¡Œå‰Šé™¤)
+# å¼•æ•°1: ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 function get_config($config_file){
     Write-Output "(config)# ${config_file}"
     if(Test-Path "${config_file}"){
         Get-Content ${config_file} | Where-Object { $_ -notmatch "^#" -and $_ -ne "" }
     }else{
-        Write-Output "[ERROR] ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ü‚¹‚ñBFile name: ${config_file}"
+        Write-Output "[ERROR] ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚File name: ${config_file}"
     }
     Write-Output ""
 }
 
-# ŠÖ”–¼: ƒŒƒWƒXƒgƒŠæ“¾ŠÖ”(ƒRƒƒ“ƒgA‹ósíœ)
-# ˆø”1: ƒtƒ@ƒCƒ‹ƒpƒX
-function get_registory($registory_path){
-    Write-Output "(registory)# ${registory_path}"
-    if(Test-Path "${registory_path}"){
-        Get-ItemProperty ${registory_path}
-    }else{
-        Write-Output "[ERROR] ƒŒƒWƒXƒgƒŠ‚ÌƒpƒX‚ª‘¶İ‚µ‚Ü‚¹‚ñBFile name: ${registory_path}"
-    }
-    Write-Output ""
-}
+# ãƒ¡ã‚¤ãƒ³å‡¦ç†
+show_title "æƒ…å ±å–å¾—é–‹å§‹ $((Get-Date).ToString('yyyy/MM/dd HH:mm:ss'))"
 
-
-# ƒƒCƒ“ˆ—
-show_title "î•ñæ“¾ŠJn $((Get-Date).ToString('yyyy/MM/dd HH:mm:ss'))"
-
-show_title "ƒzƒXƒg–¼EOSƒo[ƒWƒ‡ƒ“î•ñ"
+show_title "ãƒ›ã‚¹ãƒˆåãƒ»OSãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±"
 get_command "hostname"
-get_command "whoami.exe /user"; Write-Output ""
+get_command_bat "whoami.exe /user"
 get_command "Get-WmiObject Win32_OperatingSystem | Select-Object Caption, OSArchitecture, Version, CodeSet, CountryCode, LastBootUpTime"
 
-show_title "ƒn[ƒhƒEƒFƒAî•ñ"
+show_title "ãƒãƒ¼ãƒ‰ã‚¦ã‚§ã‚¢æƒ…å ±"
 get_command "Get-WmiObject Win32_ComputerSystem | Select-Object NumberOfProcessors, NumberOfLogicalProcessors, @{N='TotalPhysicalMemoryGB'; E={[Math]::Round(`$_.TotalPhysicalMemory/1GB, 2)}}" "list"
 get_command "Get-PnpDevice | Select-Object Class, FriendlyName, Manufacturer, Status"
 
-show_title "OSŠî–{İ’è"
+show_title "OSåŸºæœ¬è¨­å®š"
 get_command "Get-ComputerInfo" "list"
 if($null -eq (Get-WmiObject Win32_Pagefile)){
-    Write-Output "(config)# ‚·‚×‚Ä‚Ìƒy[ƒWƒ“ƒOƒtƒ@ƒCƒ‹‚ÌƒTƒCƒY‚ğ©“®“I‚ÉŠÇ—‚·‚é"
-    Write-Output '—LŒø'
+    Write-Output "(config)# ã™ã¹ã¦ã®ãƒšãƒ¼ã‚¸ãƒ³ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚µã‚¤ã‚ºã‚’è‡ªå‹•çš„ã«ç®¡ç†ã™ã‚‹"
+    Write-Output 'æœ‰åŠ¹'
 }else{
-    Write-Output '–³Œø'
+    Write-Output 'ç„¡åŠ¹'
     get_command "Get-WmiObject Win32_Pagefile" "list"
 }
 Write-Output ""
-# DebugInfoType‚ÍA0:–³ŒøA1:Š®‘SA2:ƒJ[ƒlƒ‹A3:Å¬A7:©“®
+# DebugInfoTypeã¯ã€0:ç„¡åŠ¹ã€1:å®Œå…¨ã€2:ã‚«ãƒ¼ãƒãƒ«ã€3:æœ€å°ã€7:è‡ªå‹•
 get_command "Get-WmiObject Win32_OSRecoveryConfiguration" "list"
 
-show_title "ƒlƒbƒgƒ[ƒNİ’è"
-get_command "ipconfig /all"; Write-Output ""
+show_title "ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯è¨­å®š"
+get_command_bat "ipconfig /all"
 get_command "Get-NetAdapter" "list"
 get_command "Get-NetAdapterAdvancedProperty"
 get_command "Get-NetAdapterBinding"
@@ -103,9 +106,9 @@ get_command "netsh int ipv4 show excludedportrange tcp"
 get_command "netsh int ipv4 show excludedportrange udp"
 get_command "netsh winhttp show proxy"
 
-show_title "ƒfƒBƒXƒNİ’è"
-# Windows Server 2022‚Å‚Íˆê“x–Ú‚ÌGet-Disk‚Ì•\¦‚ª‚³‚ê‚È‚¢‚±‚Æ‚ª‚ ‚é‚½‚ßA2‰ñÀs‚·‚é
-Get-Disk | Out-Null; get_command "Get-Disk"
+show_title "ãƒ‡ã‚£ã‚¹ã‚¯è¨­å®š"
+# Windows Server 2022ã§ã¯ä¸€åº¦ç›®ã®Get-Diskã®è¡¨ç¤ºãŒã•ã‚Œãªã„ã“ã¨ãŒã‚ã‚‹ãŸã‚ã€2å›å®Ÿè¡Œã™ã‚‹
+Get-Disk | Out-Null; sleep 1; get_command "Get-Disk"
 get_command "Get-WmiObject Win32_DiskDrive | Select-Object Index, DeviceID, Model, @{N='SizeGB'; E={[Math]::Round(`$_.Size/1GB, 2)}}, Partitions | sort Index"
 get_command "Get-WmiObject Win32_DiskPartition | Select-Object DiskIndex, Index, Name, BlockSize, Bootable, @{N='SizeGB'; E={[Math]::Round(`$_.Size/1GB, 2)}}, Type, Description | sort DiskIndex, Index"
 get_command "Get-WmiObject Win32_LogicalDisk | Select-Object DeviceID, FileSystem, @{N='SizeGB'; E={[Math]::Round(`$_.Size/1GB, 2)}}, @{N='FreeSpaceGB'; E={[Math]::Round(`$_.FreeSpace/1GB, 2)}}, ProviderName, Description"
@@ -114,70 +117,76 @@ get_command "Get-WmiObject Win32_DiskPartition" "list"
 get_command "Get-WmiObject Win32_LogicalDisk" "list"
 get_command "Get-ChildItem 'C:\' -Hidden"
 
-show_title "ŒõŠwƒhƒ‰ƒCƒuİ’è"
+show_title "å…‰å­¦ãƒ‰ãƒ©ã‚¤ãƒ–è¨­å®š"
 get_command "Get-WmiObject Win32_CDROMDrive | Select-Object Drive, Caption, Manufacturer, MediaLoaded"
 
-show_title "ƒ†[ƒUEƒOƒ‹[ƒvİ’è"
+show_title "ãƒ¦ãƒ¼ã‚¶ãƒ»ã‚°ãƒ«ãƒ¼ãƒ—è¨­å®š"
 get_command "Get-LocalUser | Select-Object Name, Enabled, Description"
 get_command "Get-LocalGroup | Select-Object Name, Description"
 
-show_title "ƒŠƒ‚[ƒgƒfƒXƒNƒgƒbƒvİ’è"
-Write-Output "(config)# ‚±‚ÌƒRƒ“ƒsƒ…[ƒ^‚Ö‚ÌƒŠƒ‚[ƒgÚ‘±‚ğ‹–‰Â‚·‚é"
+show_title "ãƒªãƒ¢ãƒ¼ãƒˆãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—è¨­å®š"
+Write-Output "(config)# ã“ã®ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ã¸ã®ãƒªãƒ¢ãƒ¼ãƒˆæ¥ç¶šã‚’è¨±å¯ã™ã‚‹"
 if((Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server').fDenyTSConnections -eq 0){
-    Write-Output '‹–‰Â‚·‚é'
+    Write-Output 'è¨±å¯ã™ã‚‹'
 }else{
-    Write-Output '‹–‰Â‚µ‚È‚¢'
+    Write-Output 'è¨±å¯ã—ãªã„'
 }
 Write-Output ""
 
-Write-Output "(config)# ƒlƒbƒgƒ[ƒNƒŒƒxƒ‹”FØ‚ÅƒŠƒ‚[ƒgƒfƒXƒNƒgƒbƒv‚ğÀs‚µ‚Ä‚¢‚éƒRƒ“ƒsƒ…[ƒ^[‚©‚ç‚Ì‚İÚ‘±‚ğ‹–‰Â‚·‚é („§)"
+Write-Output "(config)# ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒ¬ãƒ™ãƒ«èªè¨¼ã§ãƒªãƒ¢ãƒ¼ãƒˆãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã‚’å®Ÿè¡Œã—ã¦ã„ã‚‹ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ãƒ¼ã‹ã‚‰ã®ã¿æ¥ç¶šã‚’è¨±å¯ã™ã‚‹ (æ¨å¥¨)"
 if((Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp').UserAuthentication -eq 0){
-    Write-Output '–³Œø'
+    Write-Output 'ç„¡åŠ¹'
 }else{
-    Write-Output '—LŒø'
+    Write-Output 'æœ‰åŠ¹'
 }
 Write-Output ""
 
-show_title "İ’è"
+show_title "æ™‚åˆ»è¨­å®š"
 get_command "Get-TimeZone"
-# w32tm‚Ì•¶š‰»‚¯‘Îô‚Ì‚½‚ßAˆêƒtƒ@ƒCƒ‹‚Éo—Í‚µ‚Ä‚©‚ç•\¦
-get_command "cmd /C 'w32tm /query /status > ${encode_file_path}'"
+get_command_bat "sc qc w32time"
+get_command_bat "sc qtriggerinfo w32time"
+get_command "Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\W32Time\Config'" "list"
+get_command "Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\W32Time\Parameters'" "list"
+get_command "Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient'" "list"
+get_command "Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpServer'" "list"
+# w32tmã®æ–‡å­—åŒ–ã‘å¯¾ç­–ã®ãŸã‚ã€ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ›ã—ã¦ã‹ã‚‰è¡¨ç¤º
+get_command_bat "w32tm /query /status > ${encode_file_path}"
 Get-Content "${encode_file_path}"
 Remove-Item "${encode_file_path}" -Confirm:$false
 
-show_title "OSŒ¾Œêİ’è"
+show_title "OSè¨€èªè¨­å®š"
 get_command "Get-WinSystemLocale"
 get_command "Get-Culture" "list"
 get_command "Get-WmiObject Win32_Keyboard | Select-Object Name, Layout, Description"
 
-show_title "ƒT[ƒrƒXİ’è"
+show_title "ã‚µãƒ¼ãƒ“ã‚¹è¨­å®š"
 get_command "Get-Service | Select-Object Name, DisplayName, Status, StartType"
 
-show_title "–ğŠ„E‹@”\"
+show_title "å½¹å‰²ãƒ»æ©Ÿèƒ½"
 get_command "Get-WindowsFeature"
 
-show_title "XVƒvƒƒOƒ‰ƒ€"
+show_title "æ›´æ–°ãƒ—ãƒ­ã‚°ãƒ©ãƒ "
 get_command "Get-HotFix"
 
-show_title "ƒCƒ“ƒXƒg[ƒ‹ƒ\ƒtƒgƒEƒFƒA"
-# ƒŒƒWƒXƒgƒŠ‚©‚ç’ŠoB$‚ÍƒGƒXƒP[ƒv‚·‚é‚±‚Æ(`$)
+show_title "ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢"
+# ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‹ã‚‰æŠ½å‡ºã€‚$ã¯ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã™ã‚‹ã“ã¨(`$)
 get_command "Get-ChildItem -Path('HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall','HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall') | % { Get-ItemProperty `$_.PsPath | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate }"
 
-show_title "PowerShellƒ‚ƒWƒ…[ƒ‹"
+show_title "PowerShellãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«"
 get_command "Get-ChildItem 'C:\Program Files\WindowsPowerShell\Modules'"
 
-show_title "ƒCƒxƒ“ƒgƒrƒ…[ƒA["
-# ƒZƒLƒ…ƒŠƒeƒBƒCƒxƒ“ƒg‚Ìî•ño—Í‚ÍAuŠÇ—Ò‚ÅÀsv‚ª•K—v
+show_title "ã‚¤ãƒ™ãƒ³ãƒˆãƒ“ãƒ¥ãƒ¼ã‚¢ãƒ¼"
+# ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£ã‚¤ãƒ™ãƒ³ãƒˆã®æƒ…å ±å‡ºåŠ›ã¯ã€ã€Œç®¡ç†è€…ã§å®Ÿè¡Œã€ãŒå¿…è¦
 get_command "Get-EventLog -List | Select-Object Log, LogDisplayName, OverflowAction, MaximumKilobytes"
 get_command "Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\System' | Select-Object PrimaryModule, File, MaxSize"
 get_command "Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\Application' | Select-Object PrimaryModule, File, MaxSize"
 get_command "Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\Security' | Select-Object PrimaryModule, File, MaxSize"
 
-show_title "Windows Defenderƒtƒ@ƒCƒAƒEƒH[ƒ‹"
+show_title "Windows Defenderãƒ•ã‚¡ã‚¤ã‚¢ã‚¦ã‚©ãƒ¼ãƒ«"
 get_command "Get-NetFirewallProfile | Select-Object Name, Enabled"
-get_command "Get-NetFirewallRule | Select-Object Name, DisplayName, Enabled"
+get_command "Get-NetFirewallRule | Select-Object Name, DisplayName, Enabled | sort Name"
 
-# ƒƒCƒ“ˆ—I—¹
-show_title "î•ñæ“¾I—¹ $(date)"
+# ãƒ¡ã‚¤ãƒ³å‡¦ç†çµ‚äº†
+show_title "æƒ…å ±å–å¾—çµ‚äº† $((Get-Date).ToString('yyyy/MM/dd HH:mm:ss'))"
 Stop-Transcript
 exit 0
