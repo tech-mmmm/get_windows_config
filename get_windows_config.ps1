@@ -2,7 +2,7 @@
 # Scripts name : get_windows_config.ps1
 # Usage        : ./get_windows_config.ps1
 # Description  : Windows情報取得スクリプト
-# Create       : 2022/05/22 tech-mmmm (https://tech-mmmm.blogspot.com/)
+# Create       : 2022/05/28 tech-mmmm (https://tech-mmmm.blogspot.com/)
 # Modify       :
 ################
 
