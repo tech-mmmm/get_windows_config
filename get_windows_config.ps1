@@ -12,7 +12,7 @@ $encode_file_path = ".\$(hostname)_encode_${today}.tmp"     # 文字化け対策
 Start-Transcript -Path ${file_path}
 
 # 列挙項目が省略されないようにする
-$FormatEnumerationLimit = -1 #
+$FormatEnumerationLimit = -1
 
 function show_title($title){
     Write-Output "################################"
@@ -69,7 +69,7 @@ function get_config($config_file){
 show_title "情報取得開始 $((Get-Date).ToString('yyyy/MM/dd HH:mm:ss'))"
 
 show_title "ホスト名・OSバージョン情報"
-get_command "hostname"
+get_command_bat "hostname"
 get_command_bat "whoami.exe /user"
 get_command "Get-WmiObject Win32_OperatingSystem | Select-Object Caption, OSArchitecture, Version, CodeSet, CountryCode, LastBootUpTime"
 
