@@ -3,7 +3,8 @@
 # Usage        : ./get_windows_config.ps1
 # Description  : Windows情報取得スクリプト
 # Create       : 2022/05/28 tech-mmmm (https://tech-mmmm.blogspot.com/)
-# Modify       :
+# Modify       : 2022/08/07 出力時に改行がされないよう修正
+#                           インストールプログラムの出力方式変更
 ################
 
 $today = (Get-Date).ToString("yyyyMMdd-HHmmss")    # ログ出力日時
@@ -31,7 +32,8 @@ function get_command($command, $output_format){
     }elseif(${output_format} -eq "list_brief"){
         ${command} = ${command} + "| fl"
     }else{
-        ${command} = ${command} + "| ft -AutoSize -Wrap"
+        # ${command} = ${command} + "| ft -AutoSize -Wrap"
+        ${command} = ${command} + "| ft -AutoSize | Out-String -Width 2048"
     }
     try{
         Invoke-Expression "${command}"
@@ -170,7 +172,8 @@ get_command "Get-HotFix"
 
 show_title "インストールソフトウェア"
 # レジストリから抽出。$はエスケープすること(`$)
-get_command "Get-ChildItem -Path('HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall','HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall') | % { Get-ItemProperty `$_.PsPath | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate }"
+# get_command "Get-ChildItem -Path('HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall','HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall') | % { Get-ItemProperty `$_.PsPath | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate }"
+get_command "Get-WmiObject Win32_Product | Select-Object Name, Vendor, Version"
 
 show_title "PowerShellモジュール"
 get_command "Get-ChildItem 'C:\Program Files\WindowsPowerShell\Modules'"
