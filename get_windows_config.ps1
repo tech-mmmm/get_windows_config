@@ -171,9 +171,13 @@ show_title "更新プログラム"
 get_command "Get-HotFix"
 
 show_title "インストールソフトウェア"
-# レジストリから抽出。$はエスケープすること(`$)
-# get_command "Get-ChildItem -Path('HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall','HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall') | % { Get-ItemProperty `$_.PsPath | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate }"
-get_command "Get-WmiObject Win32_Product | Select-Object Name, Vendor, Version"
+# レジストリから抽出。$及び`はエスケープすること(`$、``)
+# Get-WmiObject Win32_Productは環境によっては負荷が高いため利用しない
+get_command "Get-ChildItem -Path('HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall', ``
+    'HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall', ``
+    'HKLM:SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall') | ``
+    % { Get-ItemProperty `$_.PsPath | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate }"
+# get_command "Get-WmiObject Win32_Product | Select-Object Name, Vendor, Version"
 
 show_title "PowerShellモジュール"
 get_command "Get-ChildItem 'C:\Program Files\WindowsPowerShell\Modules'"
